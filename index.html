@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>¿Quieres ser mi San Valentín?</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+/* RESET */
+* {
+    box-sizing: border-box;
+}
+
+/* BODY */
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    overflow: hidden;
+}
+
+/* FONDO COLLAGE */
+#background {
+    position: fixed;
+    inset: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+    grid-auto-rows: 125px;
+    z-index: 1;
+}
+
+#background img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.7) blur(1px);
+}
+
+/* OVERLAY ROSA */
+#overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(255, 182, 213, 0.65);
+    z-index: 2;
+}
+
+/* CONTENEDOR CENTRAL */
+#app {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 3;
+}
+
+/* TARJETA */
+.card {
+    background: white;
+    padding: 35px;
+    border-radius: 24px;
+    text-align: center;
+    max-width: 420px;
+    width: 90%;
+    box-shadow: 0 12px 35px rgba(0,0,0,0.25);
+}
+
+/* TEXTO */
+h1 {
+    color: #d63384;
+}
+
+p {
+    color: #555;
+    font-size: 1.1em;
+}
+
+/* RAMO */
+.ramo {
+    width: 200px;
+    max-width: 70%;
+    margin: 20px auto;
+    display: block;
+}
+
+/* BOTONES */
+.buttons { 
+    position: relative; height: 60px; 
+} 
+
+button { 
+    padding: 12px 22px; font-size: 1em; border: none; border-radius: 25px; cursor: pointer; transition: 0.3s; 
+} 
+
+#yesBtn { 
+    background: #ff4d94; color: white; margin-right: 10px; 
+} 
+
+#yesBtn:hover { 
+    background: #e6397f; 
+} 
+
+#noBtn { 
+    background: #ddd; color: #555; position: absolute; 
+}
+
+
+/* MENSAJE FINAL */
+#finalMessage {
+    display: none;
+    font-size: 2.4em;
+    color: #d63384;
+    font-weight: bold;
+}
+
+/* RESPONSIVE */
+@media (max-width: 480px) {
+    #background {
+        grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+        grid-auto-rows: 70px;
+    }
+    #finalMessage {
+        font-size: 1.9em;
+    }
+}
+
+/* PANTALLA DE BIENVENIDA */
+#welcome {
+    position: fixed;
+    inset: 0;
+    background: #ffb6d5;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    text-align: center;
+}
+
+#welcome h1 {
+    font-size: 3em;
+    color: #d63384;
+    margin-bottom: 30px;
+}
+
+#welcome button {
+    padding: 14px 40px;
+    font-size: 1.2em;
+    border: none;
+    border-radius: 30px;
+    background: #ff4d94;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+#welcome button:hover {
+    background: #e6397f;
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="welcome">
+    <h1>Hola mi Yuri! 💕</h1>
+    <button onclick="enterSite()">💖 Dale click aquí mi amor. 💖</button>
+</div>
+
+
+<div id="background" style="display:none;"></div>
+<div id="overlay" style="display:none;"></div>
+<div id="app" style="display:none;">
+
+<div id="app">
+    <div class="card" id="card">
+        <div id="content">
+            <h1>¿Quieres ser mi San Valentín? 💕</h1>
+
+            <p>
+                Cada día a tu lado es maravilloso, estoy enamorado de ti y me gustas mucho.  
+                Y quiero pasar nuestro primer San Valentín como novios juntos.
+                <br><strong>TE AMO.</strong>
+            </p>
+
+            <img src="fotos/ramo.png" class="ramo" alt="Ramo">
+
+            <div class="buttons"> <button id="yesBtn" onclick="acceptLove()">SÍ 💖</button> <button id="noBtn" onmouseover="moveNo()">NO 🙃</button> </div>
+        </div>
+
+        <div id="finalMessage">
+            ¡Te Amo Mucho Yuri! 💖
+        </div>
+    </div>
+</div>
+
+<script>
+/* COLLAGE */
+const totalFotos = 119;
+const bg = document.getElementById("background");
+
+for (let i = 1; i <= totalFotos; i++) {
+    const img = document.createElement("img");
+    img.src = `fotos/${i}.jpg`;
+    bg.appendChild(img);
+}
+
+/* BOTÓN NO */
+const noBtn = document.getElementById("noBtn");
+
+noBtn.addEventListener("mouseover", () => {
+    const parent = noBtn.parentElement;
+    const maxX = parent.offsetWidth - noBtn.offsetWidth;
+    const maxY = parent.offsetHeight - noBtn.offsetHeight;
+
+    noBtn.style.left = Math.random() * maxX + "px";
+    noBtn.style.top = Math.random() * maxY + "px";
+});
+
+/* BOTÓN SÍ */
+document.getElementById("yesBtn").addEventListener("click", () => {
+    document.getElementById("content").style.display = "none";
+    document.getElementById("finalMessage").style.display = "block";
+});
+
+
+function enterSite() {
+    document.getElementById("welcome").style.display = "none";
+    document.getElementById("background").style.display = "grid";
+    document.getElementById("overlay").style.display = "block";
+    document.getElementById("app").style.display = "flex";
+}
+
+</script>
+
+</body>
+</html>
