@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Yuri... 💖</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow: hidden;
+    background-color: #ffb6d5;
+    /* Evita el scroll elástico en iOS */
+    position: fixed;
+    width: 100%;
+    height: 100%;
+}
+
+/* ===== FONDO COLLAGE ===== */
+#background {
+    position: fixed;
+    inset: 0;
+    display: grid;
+    /* Ajuste para que las columnas sean exactas */
+    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+    grid-auto-rows: 90px;
+    z-index: 1;
+    overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+}
+
+#background img {
+    width: 100%;
+    height: 100%;
+    /* Fix para iOS: forzamos el display block y quitamos espacios residuales */
+    display: block;
+    object-fit: cover;
+    filter: brightness(0.75) blur(0.6px);
+}
+
+/* ===== OVERLAY ROSA ===== */
+#overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(255, 182, 213, 0.65);
+    z-index: 2;
+    pointer-events: none;
+}
+
+/* ===== CONTENEDOR PRINCIPAL ===== */
+#app {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 3;
+}
+
+/* ===== TARJETA ===== */
+.card {
+    background: white;
+    padding: 30px;
+    border-radius: 24px;
+    text-align: center;
+    max-width: 420px;
+    width: 85%;
+    box-shadow: 0 12px 35px rgba(0,0,0,0.25);
+    transition: all 0.3s ease;
+}
+
+h1 {
+    color: #d63384;
+    margin-top: 0;
+}
+
+p {
+    color: #555;
+    font-size: 1.1em;
+    line-height: 1.4;
+}
+
+.ramo {
+    width: 180px;
+    max-width: 60%;
+    margin: 15px auto;
+    display: block;
+}
+
+.buttons {
+    position: relative;
+    height: 60px;
+    margin-top: 20px;
+}
+
+button {
+    padding: 12px 22px;
+    font-size: 1em;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: 0.3s;
+    font-weight: bold;
+}
+
+#yesBtn {
+    background: #ff4d94;
+    color: white;
+}
+
+#noBtn {
+    background: #ddd;
+    color: #555;
+    position: absolute;
+    white-space: nowrap;
+}
+
+#finalMessage {
+    display: none;
+    font-size: 2.2em;
+    color: #d63384;
+    font-weight: bold;
+    animation: scaleIn 0.5s ease-out;
+}
+
+@keyframes scaleIn {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+/* ===== BIENVENIDA ===== */
+#welcome {
+    position: fixed;
+    inset: 0;
+    background: #ffb6d5;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    text-align: center;
+}
+
+#welcome h1 {
+    font-size: 2.5em;
+    color: #d63384;
+    margin-bottom: 30px;
+    padding: 0 20px;
+}
+
+#welcome button {
+    padding: 16px 45px;
+    font-size: 1.3em;
+    background: #ff4d94;
+    color: white;
+}
+
+/* ===== MOBILE ADAPTATION ===== */
+@media (max-width: 480px) {
+    #background {
+        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+        grid-auto-rows: 80px;
+    }
+    
+    .card {
+        padding: 25px 15px;
+    }
+
+    #finalMessage {
+        font-size: 1.8em;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div id="welcome">
+    <h1>Hola mi Yuri! 💕</h1>
+    <button onclick="enterSite()">💖 Dale click aqui mi amor 💖</button>
+</div>
+
+<div id="background" style="display:none;"></div>
+<div id="overlay" style="display:none;"></div>
+
+<div id="app" style="display:none;">
+    <div class="card">
+        <div id="content">
+            <h1>¿Quieres ser mi San Valentín? 💕</h1>
+            <p>
+                Cada día a tu lado es maravilloso.<br>
+                Quiero pasar nuestro primer San Valentín juntos. 
+                <br><strong>TE AMO.</strong>
+            </p>
+
+            <img src="fotos/ramo.png" class="ramo" alt="Ramo">
+
+            <div class="buttons">
+                <button id="yesBtn">SÍ 💖</button>
+                <button id="noBtn">NO 🙃</button>
+            </div>
+        </div>
+
+        <div id="finalMessage">
+            ¡Te Amo Mucho Yuri! 💖
+        </div>
+    </div>
+</div>
+
+<script>
+/* COLLAGE */
+const totalFotos = 119;
+const bg = document.getElementById("background");
+
+// Generar las imágenes de forma eficiente
+for (let i = 1; i <= totalFotos; i++) {
+    const img = document.createElement("img");
+    img.src = `fotos/${i}.jpg`;
+    img.loading = "lazy"; // Optimización de carga
+    bg.appendChild(img);
+}
+
+/* BOTÓN NO */
+const noBtn = document.getElementById("noBtn");
+
+noBtn.addEventListener("touchstart", moveButton); // Añadido para mejor soporte en móvil
+noBtn.addEventListener("mouseover", moveButton);
+
+function moveButton(e) {
+    const parent = noBtn.parentElement;
+    const maxX = parent.offsetWidth - noBtn.offsetWidth;
+    const maxY = parent.offsetHeight - noBtn.offsetHeight;
+
+    const newX = Math.random() * maxX;
+    const newY = Math.random() * maxY;
+
+    noBtn.style.left = newX + "px";
+    noBtn.style.top = newY + "px";
+}
+
+/* BOTÓN SÍ */
+document.getElementById("yesBtn").onclick = () => {
+    document.getElementById("content").style.display = "none";
+    document.getElementById("finalMessage").style.display = "block";
+};
+
+function enterSite() {
+    document.getElementById("welcome").style.display = "none";
+    document.getElementById("background").style.display = "grid";
+    document.getElementById("overlay").style.display = "block";
+    document.getElementById("app").style.display = "flex";
+}
+</script>
+
+</body>
+</html>
